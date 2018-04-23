@@ -29,6 +29,7 @@ class ProjectController extends Controller
             'msg' => 'List of projects',
             'project' => $projects
         ];
+        return response()->json($response, 200);
     }
 
     /**
@@ -49,7 +50,30 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+           'name' => 'required|min:10'
+        ]);
+        $name_project = $request->get('name');
+        $project = new Project([
+           'name' => $name_project
+        ]);
+        if($project->save()){
+            $project->view_project = [
+              'href' => 'app/v1/project'.$project->id,
+              'method' => 'GET'
+            ];
+            $response = [
+              'msg' => 'Created successfully',
+              'project' => $project
+            ];
+            return response()->json($project, 201);
+        }
+        else{
+            $response = [
+              'msg' => 'Error occurred !'
+            ];
+            return response()->json($response, 404);
+        }
     }
 
     /**
