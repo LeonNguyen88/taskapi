@@ -52,8 +52,8 @@ class UserController extends Controller
             'password' => $password
         ]);
         if($user->save()){
-            $user->signin = [
-                'href' => 'app/v1/signin',
+            $user->login = [
+                'href' => 'api/v1/login',
                 'method' => 'POST',
                 'params' => 'email, password'
             ];

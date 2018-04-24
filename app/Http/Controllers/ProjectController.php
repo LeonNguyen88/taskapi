@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use JWTAuth;
 use App\Project;
 use Illuminate\Http\Request;
+
 
 class ProjectController extends Controller
 {
@@ -21,7 +22,7 @@ class ProjectController extends Controller
         $projects = Project::all();
         foreach($projects as $project){
             $project->view_project = [
-              'href' => 'app/v1/project/'.$project->id,
+              'href' => 'api/v1/project/'.$project->id,
               'method' => 'GET'
             ];
         }
@@ -53,20 +54,24 @@ class ProjectController extends Controller
         $this->validate($request, [
            'name' => 'required|min:10'
         ]);
+        if(!$user = JWTAuth::parseToken()->authenticate()) {
+            return  response()->json(['msg' => 'User not found'], 404);
+        }
         $name_project = $request->get('name');
+
         $project = new Project([
            'name' => $name_project
         ]);
         if($project->save()){
             $project->view_project = [
-              'href' => 'app/v1/project'.$project->id,
+              'href' => 'api/v1/project/'.$project->id,
               'method' => 'GET'
             ];
             $response = [
               'msg' => 'Created successfully',
               'project' => $project
             ];
-            return response()->json($project, 201);
+            return response()->json($response, 201);
         }
         else{
             $response = [
@@ -84,7 +89,16 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        $project = Project::find($id);
+        $project->view_projects = [
+          'href' => 'api/v1/project',
+          'method' => 'GET'
+        ];
+        $response = [
+          'msg' => 'Project info',
+          'project' => $project
+        ];
+        return response()->json($response, 200);
     }
 
     /**
