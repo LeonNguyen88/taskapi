@@ -24,6 +24,8 @@ Route::group(['prefix' => 'v1'], function(){
     Route::get('project', 'ProjectController@index')->name('listproject');
     Route::post('project/create', 'ProjectController@store')->name('createproject');
     Route::get('project/{id}', 'ProjectController@show')->name('showprojectinfo');
+    Route::get('task', 'TaskController@index')->name('listtask');
+    Route::post('task/create', 'TaskController@store')->name('createtask');
 });
 Route::get('/test', function(){
    return "Hello";
