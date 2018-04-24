@@ -19,9 +19,11 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'v1'], function(){
     Route::post('user/register', 'UserController@store');
     Route::post('user/login', 'UserController@login')->name('login');
-    Route::get('project', 'ProjectController@index')->name('project');
+    Route::get('user/{id}', 'UserController@show')->name('showuserinfo');
+    Route::get('user', 'UserController@index')->name('listuser');
+    Route::get('project', 'ProjectController@index')->name('listproject');
     Route::post('project/create', 'ProjectController@store')->name('createproject');
-    Route::get('project/{id}', 'ProjectController@show')->name('showproject');
+    Route::get('project/{id}', 'ProjectController@show')->name('showprojectinfo');
 });
 Route::get('/test', function(){
    return "Hello";

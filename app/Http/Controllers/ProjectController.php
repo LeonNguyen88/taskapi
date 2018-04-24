@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use Flugg\Responder\Responder;
 use JWTAuth;
 use App\Project;
 use Illuminate\Http\Request;
+use Namshi\JOSE\JWT;
 
 
 class ProjectController extends Controller
@@ -30,7 +32,7 @@ class ProjectController extends Controller
             'msg' => 'List of projects',
             'project' => $projects
         ];
-        return response()->json($response, 200);
+        return responder()->success($response);
     }
 
     /**
@@ -54,9 +56,14 @@ class ProjectController extends Controller
         $this->validate($request, [
            'name' => 'required|min:10'
         ]);
-        if(!$user = JWTAuth::parseToken()->authenticate()) {
-            return  response()->json(['msg' => 'User not found'], 404);
+        $token = JWTAuth::getToken();
+        $user_role = JWTAuth::toUser($token)->level;
+        if($user_role != 1){
+            return responder()->error(404, 'This user is not permission to create project');
         }
+//        if(!$user = JWTAuth::parseToken()->authenticate()) {
+//            return  responder()->error(404, 'User not found');
+//        }
         $name_project = $request->get('name');
 
         $project = new Project([
@@ -71,13 +78,13 @@ class ProjectController extends Controller
               'msg' => 'Created successfully',
               'project' => $project
             ];
-            return response()->json($response, 201);
+            return responder()->success($response);
         }
         else{
             $response = [
               'msg' => 'Error occurred !'
             ];
-            return response()->json($response, 404);
+            return responder()->error($response);
         }
     }
 
@@ -98,7 +105,7 @@ class ProjectController extends Controller
           'msg' => 'Project info',
           'project' => $project
         ];
-        return response()->json($response, 200);
+        return responder()->success($response);
     }
 
     /**

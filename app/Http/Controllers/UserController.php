@@ -17,7 +17,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        foreach($users as $user){
+            $user->view_user = [
+              'href' => 'api/v1/user/'.$user->id,
+              'method' => 'GET'
+            ];
+        }
+        $response = [
+          'msg' => 'List of users',
+          'user' => $users
+        ];
+        return responder()->success($response);
     }
 
     /**
@@ -61,13 +72,13 @@ class UserController extends Controller
                 'msg' => 'User is created successfully',
                 'user' => $user
             ];
-            return response()->json($response, 201);
+            return responder()->success($response);
         }
         else{
             $response = [
                 'msg' => 'Error occurred !'
             ];
-            return response()->json($response, 404);
+            return responder()->error($response);
         }
     }
     public function login(Request $request){
@@ -79,15 +90,15 @@ class UserController extends Controller
         try {
             // attempt to verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                return responder()->error(401,'invalid_credentials');
             }
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return responder()->error(500, 'could_not_create_token');
         }
 
         // all good so return the token
-        return response()->json(compact('token'));
+        return responder()->success(compact('token'));
     }
 
     /**
@@ -98,7 +109,16 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        $user->view_users = [
+          'href' => 'api/v1/user',
+          'method' => 'GET'
+        ];
+        $response = [
+          'msg' => 'User information',
+          'user' => $user
+        ];
+        return responder()->success($response);
     }
 
     /**
