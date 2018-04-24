@@ -17,9 +17,15 @@ class CreateTasksTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description');
-            $table->integer('users_id');
-            $table->integer('projects_id');
+            $table->date('start_date');
+            $table->date('due_date');
+            $table->date('end_date')->nullable();
+            $table->integer('users_id')->unsigned()->index();
+            $table->integer('projects_id')->unsigned()->index();
             $table->timestamps();
+
+            //$table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('projects_id')->references('id')->on('projects')->onDelete('cascade');
         });
     }
 

@@ -26,6 +26,8 @@ Route::group(['prefix' => 'v1'], function(){
     Route::get('project/{id}', 'ProjectController@show')->name('showprojectinfo');
     Route::get('task', 'TaskController@index')->name('listtask');
     Route::post('task/create', 'TaskController@store')->name('createtask');
+    Route::get('task/{id}', 'TaskController@show')->name('showtaskinfo');
+    Route::delete('task/{id}', 'TaskController@destroy')->name('removetask');
 });
 Route::get('/test', function(){
    return "Hello";

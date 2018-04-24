@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
     public function task(){
-        return $this->hasMany('App\Task');
+        return $this->hasMany('App\Task', 'projects_id');
     }
 }

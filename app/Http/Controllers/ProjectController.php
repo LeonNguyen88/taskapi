@@ -54,7 +54,8 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-           'name' => 'required|min:10'
+           'name' => 'required|min:10',
+           'description' => 'required|min:10'
         ]);
         $token = JWTAuth::getToken();
         $user_role = JWTAuth::toUser($token)->level;
@@ -65,9 +66,10 @@ class ProjectController extends Controller
 //            return  responder()->error(404, 'User not found');
 //        }
         $name_project = $request->get('name');
-
+        $description = $request->get('description');
         $project = new Project([
-           'name' => $name_project
+           'name' => $name_project,
+           'description' => $description
         ]);
         if($project->save()){
             $project->view_project = [
@@ -139,6 +141,17 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $project = Project::find($id);
+        $project->delete();
+        $response = [
+          'msg' => 'This project is removed',
+          'project' => $project,
+          'create project' => [
+            'href' => 'api/v1/project/create',
+            'method' => 'POST',
+            'params' => 'name'
+          ]
+        ];
+        return responder()->success($response);
     }
 }

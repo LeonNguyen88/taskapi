@@ -11,6 +11,7 @@
 |
 */
 
+use App\Project;
 use App\Role;
 
 Route::get('/', function () {
@@ -21,4 +22,10 @@ Route::get('role/create', function(){
         'name' => 'User'
     ]);
     $role->save();
+});
+Route::group(['prefix' => 'admin'], function(){
+    Route::get('/', function(){
+        return view('layouts.admin');
+    })->name('admin');
+    Route::resource('/user', 'AdminUserController');
 });
