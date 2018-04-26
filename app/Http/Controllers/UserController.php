@@ -166,4 +166,24 @@ class UserController extends Controller
         ];
         return responder()->success($response);
     }
+    public function promote($id){
+        $user = User::find($id);
+        $user->level = 1;
+        $user->save();
+        $response = [
+            'msg' => 'User is promoted',
+            'user' => $user
+        ];
+        return responder()->success($response);
+    }
+    public function demote($id){
+        $user = User::find($id);
+        $user->level = 2;
+        $user->save();
+        $response = [
+            'msg' => 'User is demoted',
+            'user' => $user
+        ];
+        return responder()->success($response);
+    }
 }

@@ -9,8 +9,16 @@ $(document).ready(function() {
 
         }
         $('.deleteuser').click(function(){
-           var id = $(this).attr('data-id');
+           var id = $(this).parent().parent().attr('data-id');
            deleteuser(id);
+        });
+        $('.promoteuser').click(function(){
+            var id = $(this).parent().parent().attr('data-id');
+            promoteuser(id);
+        });
+        $('.demoteuser').click(function(){
+           var id = $(this).parent().parent().attr('data-id');
+           demoteuser(id);
         });
         function deleteuser(id){
             $.ajax({
@@ -20,15 +28,32 @@ $(document).ready(function() {
                     window.location.href = "http://localhost/testapi/public/admin/user";
                 }
             });
-            return "a";
+        }
+        function promoteuser(id){
+            $.ajax({
+                url: 'http://localhost/testapi/public/api/v1/user/promote/'+id,
+                type: 'GET',
+                success: function(result) {
+                    window.location.href = "http://localhost/testapi/public/admin/user";
+                }
+            });
+        }
+        function demoteuser(id){
+            $.ajax({
+               url: 'http://localhost/testapi/public/api/v1/user/demote/'+id,
+               type: 'GET',
+               success: function(result) {
+                   window.location.href = "http://localhost/testapi/public/admin/user";
+               }
+            });
         }
         function test(i){
-            return '<tr><td>'+resp.data.user[i].id+'</td>' +
+            return '<tr data-id="'+resp.data.user[i].id+'"><td>'+resp.data.user[i].id+'</td>' +
                 '<td>'+resp.data.user[i].name+'</td>' +
                 '<td>'+resp.data.user[i].email+'</td>' +
                 '<td>'+resp.data.user[i].role.name+'</td>' +
-                '<td><a href="" class="btn btn-success">Promote</a>' +
-                '<a href="" class="btn btn-primary">Demote</a>' +
+                '<td><a href="#" class="btn btn-success promoteuser">Promote</a>' +
+                '<a href="#" class="btn btn-primary demoteuser">Demote</a>' +
                 '<a href="#" class="btn btn-danger deleteuser" data-id="'+resp.data.user[i].id+'">Remove</a></td>'+'</tr>';
         }
 
