@@ -153,6 +153,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+        $response = [
+          'msg' => 'User is removed',
+          'user' => $user,
+          'create_user' => [
+              'href' => 'api/v1/user/register',
+              'method' => 'POST',
+              'params' => 'name, email, password'
+          ]
+        ];
+        return responder()->success($response);
     }
 }

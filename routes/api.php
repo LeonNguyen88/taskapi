@@ -21,6 +21,7 @@ Route::group(['prefix' => 'v1'], function(){
     Route::post('user/login', 'UserController@login')->name('login');
     Route::get('user/{id}', 'UserController@show')->name('showuserinfo');
     Route::get('user', 'UserController@index')->name('listuser');
+    Route::delete('user/{id}', 'UserController@destroy')->name('removeuser');
     Route::get('project', 'ProjectController@index')->name('listproject');
     Route::post('project/create', 'ProjectController@store')->name('createproject');
     Route::get('project/{id}', 'ProjectController@show')->name('showprojectinfo');
