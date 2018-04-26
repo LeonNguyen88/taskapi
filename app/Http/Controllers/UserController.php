@@ -23,6 +23,7 @@ class UserController extends Controller
               'href' => 'api/v1/user/'.$user->id,
               'method' => 'GET'
             ];
+            $user->role = $user->role->name;
         }
         $response = [
           'msg' => 'List of users',

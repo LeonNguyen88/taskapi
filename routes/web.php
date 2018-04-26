@@ -14,6 +14,7 @@
 use App\Project;
 use App\Role;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -27,5 +28,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/', function(){
         return view('layouts.admin');
     })->name('admin');
-    Route::resource('/user', 'AdminUserController');
+    Route::resource('/user', 'AdminUserController', ['names' => [
+        'index' => 'admin.users.index'
+    ]]);
 });
+

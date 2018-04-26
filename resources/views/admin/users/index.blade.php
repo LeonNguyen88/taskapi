@@ -15,14 +15,9 @@
             <th>Action</th>
         </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td class="userid"></td>
-                <td class="username"></td>
-                <td class="email"></td>
-                <td class="role"></td>
-            </tr>
+        <tbody class="abc">
+
         </tbody>
     </table>
-
+    <h1 class="username"></h1>
 @endsection
